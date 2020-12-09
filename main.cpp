@@ -17,7 +17,6 @@ int main(int argc, char *argv[])
     DAboutDialog *dialog = new DAboutDialog;
     a.setAboutDialog(dialog);
     dialog->setProductIcon(QIcon(":/images/logo.svg"));
-    dialog->setCompanyLogo(QPixmap(":/images/logo.png"));
     QString yDefaultDesc = QString("<span style=' font-size:8pt; font-weight:600;'>This is the simple app with dtk lib and WebApp Runtime. Customize by yaua</span>");
     dialog->setDescription(yDefaultDesc);
     dialog->setVersion(DApplication::buildVersion(QString("%1 %2").arg(QObject::tr("Version")).arg("1.1")));
