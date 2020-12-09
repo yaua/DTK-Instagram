@@ -14,11 +14,8 @@ int main(int argc, char *argv[])
 {
     DApplication a(argc, argv);
     a.setAttribute(Qt::AA_UseHighDpiPixmaps);
-    a.setApplicationName(DEFAULT_TITLE);
-    a.setProductName(DEFAULT_TITLE);
     DAboutDialog *dialog = new DAboutDialog;
     a.setAboutDialog(dialog);
-    dialog->setProductName(QString("<span>%1</span>").arg(DEFAULT_TITLE));
     dialog->setProductIcon(QIcon(":/images/logo.svg"));
     dialog->setCompanyLogo(QPixmap(":/images/logo.png"));
     QString yDefaultDesc = QString("<span style=' font-size:8pt; font-weight:600;'>This is the simple app with dtk lib and WebApp Runtime. Customize by yaua</span>");
