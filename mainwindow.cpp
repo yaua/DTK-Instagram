@@ -52,9 +52,9 @@ MainWindow::MainWindow(QString yTitle,
     centralWidget()->layout()->setContentsMargins(0, 0, 0, 0);
     resize(m_width, m_height);
     moveToCenter(this);
-    setWindowIcon(QIcon(":/images/logo.svg"));
+    setWindowIcon(QIcon(":/images/instagram.svg"));
     titlebar()->setTitle(yTitle);
-    titlebar()->setIcon(QIcon(":/images/logo.svg"));
+    titlebar()->setIcon(QIcon(":/images/instagram.svg"));
     btnBack->setIcon(QIcon(":/images/go-previous-24.svg"));
     btnBack->setIconSize(QSize(20, 20));
     btnForward->setIcon(QIcon(":/images/go-next-24.svg"));
@@ -95,7 +95,7 @@ MainWindow::MainWindow(QString yTitle,
     t_menu->addAction(t_exit);
     m_tray->setContextMenu(t_menu);
     m_tray->setToolTip(yTitle);
-    m_tray->setIcon(QIcon(":/images/logo.svg"));
+    m_tray->setIcon(QIcon(":/images/instagram.svg"));
 
     if(tray)
     {
@@ -185,7 +185,7 @@ void MainWindow::fullScreen()
         m_fixSize->setDisabled(true);
         m_menu->update();
         showFullScreen();
-        DMessageManager::instance()->sendMessage(this, QIcon::fromTheme("dialog-information").pixmap(64, 64), QString(tr("%1Fullscreen Mode")).arg("    "));
+        //DMessageManager::instance()->sendMessage(this, QIcon::fromTheme("dialog-information").pixmap(64, 64), QString(tr("%1Fullscreen Mode")).arg("    "));
     }
     else
     {
@@ -195,7 +195,7 @@ void MainWindow::fullScreen()
         }
         m_menu->update();
         showNormal();
-        DMessageManager::instance()->sendMessage(this, QIcon::fromTheme("dialog-information").pixmap(64, 64), QString(tr("%1Windowed Mode")).arg("    "));
+        //DMessageManager::instance()->sendMessage(this, QIcon::fromTheme("dialog-information").pixmap(64, 64), QString(tr("%1Windowed Mode")).arg("    "));
     }
 }
 
@@ -218,7 +218,6 @@ void MainWindow::fixSize()
     }
     fullScreen();
 }
-
 void MainWindow::hideButtons()
 {
     if(m_hideButtons->isChecked())
@@ -234,7 +233,6 @@ void MainWindow::hideButtons()
         btnRefresh->show();
     }
 }
-
 QString MainWindow::saveAs(QString fileName)
 {
     QString saveFile = QFileDialog::getSaveFileName(this, tr("Save As"), QDir::homePath() + "/Downloads/" + fileName);
@@ -264,16 +262,6 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
         event->accept();
     }
 }
-/*
-void MainWindow::closeEvent(QCloseEvent *event)
-{
-    if(!mtray)
-    {
-        m_dialog->close();  // When the tray is not enabled, close the main window to close the about window
-    }
-    event->accept();
-}
-*/
 void MainWindow::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
 {
     switch(reason)
@@ -287,7 +275,6 @@ void MainWindow::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
             break;
     }
 }
-
 void MainWindow::on_downloadStart(QWebEngineDownloadItem *item)
 {
     /* Try to lock the mutex and prohibit downloading multiple files at the same time */
