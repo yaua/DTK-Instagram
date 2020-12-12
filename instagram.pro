@@ -16,10 +16,9 @@ SOURCES += main.cpp\
 
 HEADERS  += mainwindow.h \
          webenginepage.h \
-         widget.h \
-    main.h
+         widget.h
 
-FORMS += widget.ui
+FORMS +=
 
 RESOURCES += imgs.qrc
 

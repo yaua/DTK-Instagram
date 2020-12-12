@@ -15,6 +15,8 @@ MainWindow::MainWindow(QString yTitle,
                        int nWidth,
                        int nHeight,
                        bool tray,
+                       bool nFullScreen,
+                       bool nFixSize,
                        bool nHideButtons,
                        DAboutDialog *dialog,
                        QWidget *parent)
@@ -33,6 +35,7 @@ MainWindow::MainWindow(QString yTitle,
     , t_show(new QAction(tr("Open Instagram")))
     , t_exit(new QAction(tr("Exit")))
     , mtray(tray)
+    , mFixSize(nFixSize)
     , m_width(nWidth)
     , m_height(nHeight)
 {
@@ -53,10 +56,19 @@ MainWindow::MainWindow(QString yTitle,
     titlebar()->addWidget(btnForward, Qt::AlignLeft);
     titlebar()->addWidget(btnRefresh, Qt::AlignLeft);
     m_fullScreen->setCheckable(true);
+    m_fullScreen->setChecked(nFullScreen);
+    m_fullScreen->setDisabled(nFixSize);
     m_fixSize->setCheckable(true);
+    m_fixSize->setChecked(nFixSize);
+    m_fixSize->setDisabled(nFixSize);
     m_hideButtons->setCheckable(true);
     m_hideButtons->setChecked(nHideButtons);
     m_hideButtons->setDisabled(nHideButtons);
+    if(!nFixSize)
+    {
+        m_menu->addAction(m_fullScreen);
+        m_menu->addAction(m_fixSize);
+    }
     if(!nHideButtons)
     {
         m_menu->addAction(m_hideButtons);
@@ -86,6 +98,19 @@ MainWindow::MainWindow(QString yTitle,
     {
         m_widget->refresh();
     });
+    connect(m_fullScreen, &QAction::triggered, this, [=]()
+    {
+        fullScreen();
+    });
+    connect(m_fixSize, &QAction::triggered, this, [=]()
+    {
+        fixSize();
+    });
+    connect(t_show, &QAction::triggered, this, [=]()
+    {
+        this->activateWindow();
+        fixSize();
+    });
     connect(m_hideButtons, &QAction::triggered, this, [=]()
     {
         hideButtons();
@@ -103,7 +128,57 @@ MainWindow::~MainWindow()
     delete m_dialog;
     delete m_tray;
 }
-
+void MainWindow::fullScreen()
+{
+    if(m_fullScreen->isChecked())
+    {
+        m_fixSize->setChecked(false);
+        m_fixSize->setDisabled(true);
+        m_menu->update();
+        showFullScreen();
+        //DMessageManager::instance()->sendMessage(this, QIcon::fromTheme("dialog-information").pixmap(64, 64), QString(tr("%1Fullscreen Mode")).arg("    "));
+    }
+    else
+    {
+        if(!mFixSize)
+        {
+            m_fixSize->setDisabled(false);
+        }
+        m_menu->update();
+        showNormal();
+        //DMessageManager::instance()->sendMessage(this, QIcon::fromTheme("dialog-information").pixmap(64, 64), QString(tr("%1Windowed Mode")).arg("    "));
+    }
+}
+void MainWindow::fixSize()
+{
+    if(m_fixSize->isChecked())
+    {
+        m_fullScreen->setChecked(false);
+        m_fullScreen->setDisabled(true);
+        m_menu->update();
+        setFixedSize(this->size());
+    }
+    else
+    {
+        m_fullScreen->setDisabled(false);
+        m_menu->update();
+        setMinimumSize(m_width, m_height);
+        setMaximumSize(QSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX));
+    }
+    fullScreen();
+}
+void MainWindow::keyPressEvent(QKeyEvent *event)
+{
+    if(!m_fixSize->isChecked())
+    {
+        if(event->key() == Qt::Key_F11)
+        {
+            m_fullScreen->trigger();
+            m_menu->update();
+        }
+        event->accept();
+    }
+}
 void MainWindow::setIcon(QString yIconPath)
 {
     QFileInfo fi(yIconPath);

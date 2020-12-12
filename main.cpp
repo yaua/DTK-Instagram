@@ -27,9 +27,16 @@ int main(int argc, char *argv[])
     int width = 700;
     int height = 800;
     bool tray = true;
+    bool fullScreen = false;
+    bool fixSize = false;
     bool hideButtons = false;
+    if(fixSize)
+    {
+        fullScreen = false;
+    }
     a.setQuitOnLastWindowClosed(!tray);
-    MainWindow w(yTitle, yUrl, width, height, tray, hideButtons);
+    MainWindow w(yTitle,
+                 yUrl, width, height, tray, fullScreen, fixSize, hideButtons);
     w.show();
     return a.exec();
 }

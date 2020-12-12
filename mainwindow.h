@@ -5,11 +5,8 @@
 #include <DToolButton>
 #include <DProgressBar>
 #include <DPushButton>
-#include <DFloatingMessage>
 #include <QSystemTrayIcon>
 #include <QLayout>
-#include <QProcess>
-#include <QMutex>
 #include "widget.h"
 
 DWIDGET_USE_NAMESPACE
@@ -23,6 +20,8 @@ public:
                int nWidth,
                int nHeight,
                bool tray = false,
+               bool nFullScreen = false,
+               bool nFixSize = false,
                bool nHideButtons = false,
                DAboutDialog *dialog = nullptr,
                QWidget *parent = nullptr);
@@ -44,9 +43,14 @@ private:
     QAction *t_exit;
     bool mtray, mFixSize;
     int m_width, m_height;
+    void fullScreen();
+    void fixSize();
     void hideButtons();
+    void keyPressEvent(QKeyEvent *event);
+    //void closeEvent(QCloseEvent *event);
 private slots:
     void trayIconActivated(QSystemTrayIcon::ActivationReason reason);
+
 signals:
     void sigQuit();
 };
